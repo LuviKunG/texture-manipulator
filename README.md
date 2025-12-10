@@ -140,6 +140,8 @@ pnpm lint
 
 ## 🌐 Deployment
 
+### Web Deployment
+
 This project is configured for deployment on GitHub Pages:
 
 ```shell
@@ -147,6 +149,70 @@ pnpm export
 ```
 
 The built files will be in the `out/` directory, ready for static hosting.
+
+### Desktop App with Electron
+
+The project includes Electron support for building native desktop applications across platforms.
+
+#### Development with Electron
+
+Run the app in development mode with Electron:
+
+```shell
+# Start development server with Electron
+pnpm electron:dev
+```
+
+This will start the Next.js development server and launch the Electron app automatically.
+
+#### Building Desktop Applications
+
+##### Prerequisites for Electron Build
+
+- All Node.js dependencies installed
+- Platform-specific build tools (automatically handled by electron-builder)
+
+##### Build Commands
+
+```shell
+# Build the Next.js app for Electron
+pnpm build:electron
+
+# Package the app (creates distributable but doesn't build installer)
+pnpm electron:pack
+
+# Build distributable installers for your current platform
+pnpm electron:dist
+```
+
+##### Platform-Specific Builds
+
+The app will build for your current platform by default:
+
+- **Windows**: Creates NSIS installer (`.exe`)
+- **macOS**: Creates DMG file (`.dmg`)
+- **Linux**: Creates AppImage (`.AppImage`)
+
+Built applications will be available in the `release/` directory.
+
+##### Configuration
+
+Electron build settings can be customized in `package.json` under the `build` section:
+
+- **App ID**: `com.luvikung.image-manipulator`
+- **Product Name**: "Image Manipulator"
+- **Output Directory**: `release/`
+
+##### Running the Built App
+
+After building, you can run the Electron app directly:
+
+```shell
+# Run the Electron app from source
+pnpm electron
+```
+
+Or install and run the generated installer from the `release/` directory.
 
 ## 🤝 Contributing
 
