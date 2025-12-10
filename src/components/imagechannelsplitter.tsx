@@ -23,6 +23,7 @@ export default function ImageChannelSplitter() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sourcePixelsRef = useRef<Uint8ClampedArray | null>(null);
   const dimensionsRef = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 1. Handle File Upload
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +125,30 @@ export default function ImageChannelSplitter() {
     return tempCanvas.toDataURL();
   };
 
+  // Download a specific channel image
+  const downloadChannel = (imageData: string, channelName: string) => {
+    if (!imageData) return;
+
+    const link = document.createElement('a');
+    link.href = imageData;
+    link.download = `${channelName}-channel.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Clear all images and reset state
+  const clearAll = () => {
+    setOriginalImage(null);
+    setChannels({ r: "", g: "", b: "", a: "" });
+    sourcePixelsRef.current = null;
+    dimensionsRef.current = { w: 0, h: 0 };
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="p-4 space-y-6">
       <h2 className="text-xl font-bold">Image Channel Separator</h2>
@@ -131,6 +156,7 @@ export default function ImageChannelSplitter() {
       {/* Input Section */}
       <div className="flex gap-4 items-center">
         <input
+          ref={fileInputRef}
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
@@ -150,6 +176,14 @@ export default function ImageChannelSplitter() {
             Show as Grayscale Mask (easier to see)
           </span>
         </label>
+        {originalImage && (
+          <button
+            onClick={clearAll}
+            className="px-4 py-2 border border-gray-300 rounded font-medium hover:bg-gray-50"
+          >
+            Clear All
+          </button>
+        )}
       </div>
 
       {/* Hidden Canvas for Processing */}
@@ -168,44 +202,83 @@ export default function ImageChannelSplitter() {
           </div>
 
           {channels.r && (
-            <>
-              <div>
-                <p className="font-semibold text-red-600 mb-2">Red Channel</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Red Channel */}
+              <div className="border rounded p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="font-semibold text-red-600">Red Channel</p>
+                  <button
+                    onClick={() => downloadChannel(channels.r, "red")}
+                    className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                  >
+                    Download
+                  </button>
+                </div>
                 <img
                   src={channels.r}
                   alt="Red Channel"
-                  className="border rounded shadow-sm max-w-full h-auto"
+                  className="w-full border rounded shadow-sm"
                 />
               </div>
-              <div>
-                <p className="font-semibold text-green-600 mb-2">
-                  Green Channel
-                </p>
+
+              {/* Green Channel */}
+              <div className="border rounded p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="font-semibold text-green-600">
+                    Green Channel
+                  </p>
+                  <button
+                    onClick={() => downloadChannel(channels.g, "green")}
+                    className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+                  >
+                    Download
+                  </button>
+                </div>
                 <img
                   src={channels.g}
                   alt="Green Channel"
-                  className="border rounded shadow-sm max-w-full h-auto"
+                  className="w-full border rounded shadow-sm"
                 />
               </div>
-              <div>
-                <p className="font-semibold text-blue-600 mb-2">Blue Channel</p>
+
+              {/* Blue Channel */}
+              <div className="border rounded p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="font-semibold text-blue-600">Blue Channel</p>
+                  <button
+                    onClick={() => downloadChannel(channels.b, "blue")}
+                    className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+                  >
+                    Download
+                  </button>
+                </div>
                 <img
                   src={channels.b}
                   alt="Blue Channel"
-                  className="border rounded shadow-sm max-w-full h-auto"
+                  className="w-full border rounded shadow-sm"
                 />
               </div>
-              <div>
-                <p className="font-semibold text-gray-600 mb-2">
-                  Alpha Channel
-                </p>
+
+              {/* Alpha Channel */}
+              <div className="border rounded p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="font-semibold text-gray-600">
+                    Alpha Channel
+                  </p>
+                  <button
+                    onClick={() => downloadChannel(channels.a, "alpha")}
+                    className="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
+                  >
+                    Download
+                  </button>
+                </div>
                 <img
                   src={channels.a}
                   alt="Alpha Channel"
-                  className="border rounded shadow-sm max-w-full h-auto"
+                  className="w-full border rounded shadow-sm"
                 />
               </div>
-            </>
+            </div>
           )}
         </div>
       )}
