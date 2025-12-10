@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent } from 'react';
 
 // Helper type for our channel processing
-type ChannelType = "red" | "green" | "blue" | "alpha";
+type ChannelType = 'red' | 'green' | 'blue' | 'alpha';
 
 export default function ImageChannelSplitter() {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
@@ -14,10 +14,10 @@ export default function ImageChannelSplitter() {
     b: string;
     a: string;
   }>({
-    r: "",
-    g: "",
-    b: "",
-    a: "",
+    r: '',
+    g: '',
+    b: '',
+    a: '',
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,7 +31,7 @@ export default function ImageChannelSplitter() {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = event => {
       const result = event.target?.result as string;
       setOriginalImage(result);
       loadImageAndProcess(result);
@@ -47,10 +47,10 @@ export default function ImageChannelSplitter() {
       dimensionsRef.current = { w, h };
 
       // 2. Draw to hidden canvas to extract raw data
-      const canvas = document.createElement("canvas");
+      const canvas = document.createElement('canvas');
       canvas.width = w;
       canvas.height = h;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
       ctx.drawImage(img, 0, 0);
@@ -69,10 +69,10 @@ export default function ImageChannelSplitter() {
     const { w, h } = dimensionsRef.current;
     const pixels = sourcePixelsRef.current;
 
-    const redUrl = extractChannel(pixels, w, h, "red", grayscaleMode);
-    const greenUrl = extractChannel(pixels, w, h, "green", grayscaleMode);
-    const blueUrl = extractChannel(pixels, w, h, "blue", grayscaleMode);
-    const alphaUrl = extractChannel(pixels, w, h, "alpha", grayscaleMode);
+    const redUrl = extractChannel(pixels, w, h, 'red', grayscaleMode);
+    const greenUrl = extractChannel(pixels, w, h, 'green', grayscaleMode);
+    const blueUrl = extractChannel(pixels, w, h, 'blue', grayscaleMode);
+    const alphaUrl = extractChannel(pixels, w, h, 'alpha', grayscaleMode);
 
     setChannels({ r: redUrl, g: greenUrl, b: blueUrl, a: alphaUrl });
   };
@@ -84,11 +84,11 @@ export default function ImageChannelSplitter() {
     channel: ChannelType,
     grayscale: boolean
   ): string => {
-    const tempCanvas = document.createElement("canvas");
+    const tempCanvas = document.createElement('canvas');
     tempCanvas.width = width;
     tempCanvas.height = height;
-    const ctx = tempCanvas.getContext("2d");
-    if (!ctx) return "";
+    const ctx = tempCanvas.getContext('2d');
+    if (!ctx) return '';
 
     const newImageData = ctx.createImageData(width, height);
     const newPixels = newImageData.data;
@@ -103,10 +103,10 @@ export default function ImageChannelSplitter() {
         // GRAYSCALE MODE: Show intensity as white (like Photoshop channels)
         // If we want Red channel, we take the R value and make it the pixel's brightness
         let intensity = 0;
-        if (channel === "red") intensity = r;
-        if (channel === "green") intensity = g;
-        if (channel === "blue") intensity = b;
-        if (channel === "alpha") intensity = a;
+        if (channel === 'red') intensity = r;
+        if (channel === 'green') intensity = g;
+        if (channel === 'blue') intensity = b;
+        if (channel === 'alpha') intensity = a;
 
         newPixels[i] = intensity; // R
         newPixels[i + 1] = intensity; // G
@@ -114,10 +114,10 @@ export default function ImageChannelSplitter() {
         newPixels[i + 3] = intensity; // A
       } else {
         // COLOR MODE: Keep only the specific color
-        newPixels[i] = channel === "red" ? r : 0;
-        newPixels[i + 1] = channel === "green" ? g : 0;
-        newPixels[i + 2] = channel === "blue" ? b : 0;
-        newPixels[i + 3] = channel === "alpha" ? a : 255;
+        newPixels[i] = channel === 'red' ? r : 0;
+        newPixels[i + 1] = channel === 'green' ? g : 0;
+        newPixels[i + 2] = channel === 'blue' ? b : 0;
+        newPixels[i + 3] = channel === 'alpha' ? a : 255;
       }
     }
 
@@ -129,7 +129,7 @@ export default function ImageChannelSplitter() {
   const downloadChannel = (imageData: string, channelName: string) => {
     if (!imageData) return;
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = imageData;
     link.download = `${channelName}-channel.png`;
     document.body.appendChild(link);
@@ -140,37 +140,37 @@ export default function ImageChannelSplitter() {
   // Clear all images and reset state
   const clearAll = () => {
     setOriginalImage(null);
-    setChannels({ r: "", g: "", b: "", a: "" });
+    setChannels({ r: '', g: '', b: '', a: '' });
     sourcePixelsRef.current = null;
     dimensionsRef.current = { w: 0, h: 0 };
     // Reset file input
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
   return (
-    <div className="p-4 space-y-6">
-      <h2 className="text-xl font-bold">Image Channel Splitter</h2>
+    <div className='p-4 space-y-6'>
+      <h2 className='text-xl font-bold'>Image Channel Splitter</h2>
 
-      <p className="text-gray-600 text-sm">
+      <p className='text-gray-600 text-sm'>
         Upload an image to split it into separate RGBA channels. Each channel
         can be downloaded individually for editing or analysis.
       </p>
 
       {/* Input Section */}
-      <div className="space-y-4">
+      <div className='space-y-4'>
         <input
           ref={fileInputRef}
-          type="file"
-          accept="image/*"
+          type='file'
+          accept='image/*'
           onChange={handleImageUpload}
-          className="border p-2 rounded"
+          className='border p-2 rounded'
         />
 
         {/* Action Buttons */}
         {originalImage && (
-          <div className="flex gap-4 items-center">
+          <div className='flex gap-4 items-center'>
             <button
               onClick={() => {
                 setIsGrayscale(!isGrayscale);
@@ -178,8 +178,8 @@ export default function ImageChannelSplitter() {
               }}
               className={`px-4 py-2 rounded font-medium transition-colors ${
                 isGrayscale
-                  ? "bg-blue-500 text-white hover:bg-blue-600"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  ? 'bg-blue-500 text-white hover:bg-blue-600'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
               Grayscale
@@ -187,7 +187,7 @@ export default function ImageChannelSplitter() {
 
             <button
               onClick={clearAll}
-              className="px-4 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600"
+              className='px-4 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600'
             >
               Clear All
             </button>
@@ -196,91 +196,91 @@ export default function ImageChannelSplitter() {
       </div>
 
       {/* Hidden Canvas for Processing */}
-      <canvas ref={canvasRef} style={{ display: "none" }} />
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {/* Display Results */}
       {originalImage && (
-        <div className="flex flex-col gap-6">
+        <div className='flex flex-col gap-6'>
           <div>
-            <p className="font-semibold mb-2">Original</p>
+            <p className='font-semibold mb-2'>Original</p>
             <img
               src={originalImage}
-              alt="Original"
-              className="border rounded shadow-sm max-w-full h-auto"
+              alt='Original'
+              className='border rounded shadow-sm max-w-full h-auto'
             />
           </div>
 
           {channels.r && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               {/* Red Channel */}
-              <div className="border rounded p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-red-600">Red Channel</p>
+              <div className='border rounded p-4'>
+                <div className='flex justify-between items-center mb-2'>
+                  <p className='font-semibold text-red-600'>Red Channel</p>
                   <button
-                    onClick={() => downloadChannel(channels.r, "red")}
-                    className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                    onClick={() => downloadChannel(channels.r, 'red')}
+                    className='px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600'
                   >
                     Download
                   </button>
                 </div>
                 <img
                   src={channels.r}
-                  alt="Red Channel"
-                  className="w-full border rounded shadow-sm"
+                  alt='Red Channel'
+                  className='w-full border rounded shadow-sm'
                 />
               </div>
 
               {/* Green Channel */}
-              <div className="border rounded p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-green-600">Green Channel</p>
+              <div className='border rounded p-4'>
+                <div className='flex justify-between items-center mb-2'>
+                  <p className='font-semibold text-green-600'>Green Channel</p>
                   <button
-                    onClick={() => downloadChannel(channels.g, "green")}
-                    className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+                    onClick={() => downloadChannel(channels.g, 'green')}
+                    className='px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600'
                   >
                     Download
                   </button>
                 </div>
                 <img
                   src={channels.g}
-                  alt="Green Channel"
-                  className="w-full border rounded shadow-sm"
+                  alt='Green Channel'
+                  className='w-full border rounded shadow-sm'
                 />
               </div>
 
               {/* Blue Channel */}
-              <div className="border rounded p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-blue-600">Blue Channel</p>
+              <div className='border rounded p-4'>
+                <div className='flex justify-between items-center mb-2'>
+                  <p className='font-semibold text-blue-600'>Blue Channel</p>
                   <button
-                    onClick={() => downloadChannel(channels.b, "blue")}
-                    className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+                    onClick={() => downloadChannel(channels.b, 'blue')}
+                    className='px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600'
                   >
                     Download
                   </button>
                 </div>
                 <img
                   src={channels.b}
-                  alt="Blue Channel"
-                  className="w-full border rounded shadow-sm"
+                  alt='Blue Channel'
+                  className='w-full border rounded shadow-sm'
                 />
               </div>
 
               {/* Alpha Channel */}
-              <div className="border rounded p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-gray-600">Alpha Channel</p>
+              <div className='border rounded p-4'>
+                <div className='flex justify-between items-center mb-2'>
+                  <p className='font-semibold text-gray-600'>Alpha Channel</p>
                   <button
-                    onClick={() => downloadChannel(channels.a, "alpha")}
-                    className="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
+                    onClick={() => downloadChannel(channels.a, 'alpha')}
+                    className='px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600'
                   >
                     Download
                   </button>
                 </div>
                 <img
                   src={channels.a}
-                  alt="Alpha Channel"
-                  className="w-full border rounded shadow-sm"
+                  alt='Alpha Channel'
+                  className='w-full border rounded shadow-sm'
                 />
               </div>
             </div>
