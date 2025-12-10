@@ -39,20 +39,20 @@ that allows you to split and combine image channels (RGBA) with ease.
 
 1. Clone the repository:
 
-```bash
+```shell
 git clone https://github.com/thanut-translucia/image-manipulator.git
 cd image-manipulator
 ```
 
 2. Install dependencies:
 
-```bash
+```shell
 pnpm install
 ```
 
 3. Start the development server:
 
-```bash
+```shell
 pnpm dev
 ```
 
@@ -60,7 +60,7 @@ pnpm dev
 
 ### Production Build
 
-```bash
+```shell
 # Build for production
 pnpm build
 
@@ -108,7 +108,7 @@ pnpm export
 
 ## 📂 Project Structure
 
-```text
+```
 src/
 ├── app/
 │   ├── globals.css          # Global styles
@@ -124,7 +124,7 @@ src/
 
 ### Code Formatting
 
-```bash
+```shell
 # Format code
 pnpm format
 
@@ -134,7 +134,7 @@ pnpm format:check
 
 ### Linting
 
-```bash
+```shell
 pnpm lint
 ```
 
@@ -142,7 +142,7 @@ pnpm lint
 
 This project is configured for deployment on GitHub Pages:
 
-```bash
+```shell
 pnpm export
 ```
 
