@@ -27,6 +27,19 @@ export default function ImageChannelCombiner() {
   const [combinedImage, setCombinedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Default values for channels when no file is loaded
+  const [defaultValues, setDefaultValues] = useState<{
+    red: number;
+    green: number;
+    blue: number;
+    alpha: number;
+  }>({
+    red: 255, // White
+    green: 255, // White
+    blue: 255, // White
+    alpha: 255, // Opaque
+  });
 
   // Refs for file inputs
   const redInputRef = useRef<HTMLInputElement>(null);
@@ -147,16 +160,16 @@ export default function ImageChannelCombiner() {
         // Extract channel values (using first channel of each image as intensity)
         const redValue = channels.red.pixels
           ? getChannelIntensity(channels.red.pixels, i)
-          : 0;
+          : defaultValues.red;
         const greenValue = channels.green.pixels
           ? getChannelIntensity(channels.green.pixels, i)
-          : 0;
+          : defaultValues.green;
         const blueValue = channels.blue.pixels
           ? getChannelIntensity(channels.blue.pixels, i)
-          : 0;
+          : defaultValues.blue;
         const alphaValue = channels.alpha.pixels
           ? getChannelIntensity(channels.alpha.pixels, i)
-          : 255;
+          : defaultValues.alpha;
 
         // Set output pixel
         outputPixels[i] = redValue; // Red
@@ -252,9 +265,8 @@ export default function ImageChannelCombiner() {
       <h2 className="text-xl font-bold">Image Channel Combiner</h2>
 
       <p className="text-gray-600 text-sm">
-        Upload separate channel images to combine them into a single image. At
-        least one channel is required. Missing channels will default to their
-        neutral values.
+        Upload separate channel images to combine them into a single image. 
+        For channels without files, you can select default values (Black, Gray, or White).
       </p>
 
       {/* Channel Upload Section */}
@@ -281,6 +293,20 @@ export default function ImageChannelCombiner() {
             onChange={(e) => handleChannelUpload("red", e)}
             className="block w-full text-sm border rounded p-2 mb-2"
           />
+          {!channels.red.imageData && (
+            <div className="mb-2">
+              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <select
+                value={defaultValues.red}
+                onChange={(e) => setDefaultValues(prev => ({ ...prev, red: Number(e.target.value) }))}
+                className="w-full text-sm border rounded p-1"
+              >
+                <option value={0}>Black (0)</option>
+                <option value={128}>Gray (128)</option>
+                <option value={255}>White (255)</option>
+              </select>
+            </div>
+          )}
           {channels.red.imageData && (
             <img
               src={channels.red.imageData}
@@ -312,6 +338,20 @@ export default function ImageChannelCombiner() {
             onChange={(e) => handleChannelUpload("green", e)}
             className="block w-full text-sm border rounded p-2 mb-2"
           />
+          {!channels.green.imageData && (
+            <div className="mb-2">
+              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <select
+                value={defaultValues.green}
+                onChange={(e) => setDefaultValues(prev => ({ ...prev, green: Number(e.target.value) }))}
+                className="w-full text-sm border rounded p-1"
+              >
+                <option value={0}>Black (0)</option>
+                <option value={128}>Gray (128)</option>
+                <option value={255}>White (255)</option>
+              </select>
+            </div>
+          )}
           {channels.green.imageData && (
             <img
               src={channels.green.imageData}
@@ -343,6 +383,20 @@ export default function ImageChannelCombiner() {
             onChange={(e) => handleChannelUpload("blue", e)}
             className="block w-full text-sm border rounded p-2 mb-2"
           />
+          {!channels.blue.imageData && (
+            <div className="mb-2">
+              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <select
+                value={defaultValues.blue}
+                onChange={(e) => setDefaultValues(prev => ({ ...prev, blue: Number(e.target.value) }))}
+                className="w-full text-sm border rounded p-1"
+              >
+                <option value={0}>Black (0)</option>
+                <option value={128}>Gray (128)</option>
+                <option value={255}>White (255)</option>
+              </select>
+            </div>
+          )}
           {channels.blue.imageData && (
             <img
               src={channels.blue.imageData}
@@ -374,6 +428,20 @@ export default function ImageChannelCombiner() {
             onChange={(e) => handleChannelUpload("alpha", e)}
             className="block w-full text-sm border rounded p-2 mb-2"
           />
+          {!channels.alpha.imageData && (
+            <div className="mb-2">
+              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <select
+                value={defaultValues.alpha}
+                onChange={(e) => setDefaultValues(prev => ({ ...prev, alpha: Number(e.target.value) }))}
+                className="w-full text-sm border rounded p-1"
+              >
+                <option value={0}>Transparent (0)</option>
+                <option value={128}>Semi-transparent (128)</option>
+                <option value={255}>Opaque (255)</option>
+              </select>
+            </div>
+          )}
           {channels.alpha.imageData && (
             <img
               src={channels.alpha.imageData}
