@@ -171,20 +171,19 @@ export default function ImageChannelSplitter() {
         {/* Action Buttons */}
         {originalImage && (
           <div className="flex gap-4 items-center">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isGrayscale}
-                onChange={(e) => {
-                  setIsGrayscale(e.target.checked);
-                  updateChannelImages(e.target.checked);
-                }}
-                className="w-5 h-5"
-              />
-              <span className="font-medium">
-                Show as Grayscale Mask (easier to see)
-              </span>
-            </label>
+            <button
+              onClick={() => {
+                setIsGrayscale(!isGrayscale);
+                updateChannelImages(!isGrayscale);
+              }}
+              className={`px-4 py-2 rounded font-medium transition-colors ${
+                isGrayscale
+                  ? "bg-blue-500 text-white hover:bg-blue-600"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              Grayscale
+            </button>
 
             <button
               onClick={clearAll}
