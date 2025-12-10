@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 
 // Helper type for our channel processing
 type ChannelType = "red" | "green" | "blue" | "alpha";
@@ -157,13 +157,13 @@ export default function ImageChannelSplitter() {
 
       {/* Display Results */}
       {originalImage && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="flex flex-col gap-6">
           <div>
             <p className="font-semibold mb-2">Original</p>
             <img
               src={originalImage}
               alt="Original"
-              className="border rounded shadow-sm"
+              className="border rounded shadow-sm max-w-full h-auto"
             />
           </div>
 
@@ -174,7 +174,7 @@ export default function ImageChannelSplitter() {
                 <img
                   src={channels.r}
                   alt="Red Channel"
-                  className="border rounded shadow-sm"
+                  className="border rounded shadow-sm max-w-full h-auto"
                 />
               </div>
               <div>
@@ -184,7 +184,7 @@ export default function ImageChannelSplitter() {
                 <img
                   src={channels.g}
                   alt="Green Channel"
-                  className="border rounded shadow-sm"
+                  className="border rounded shadow-sm max-w-full h-auto"
                 />
               </div>
               <div>
@@ -192,7 +192,7 @@ export default function ImageChannelSplitter() {
                 <img
                   src={channels.b}
                   alt="Blue Channel"
-                  className="border rounded shadow-sm"
+                  className="border rounded shadow-sm max-w-full h-auto"
                 />
               </div>
               <div>
@@ -202,7 +202,7 @@ export default function ImageChannelSplitter() {
                 <img
                   src={channels.a}
                   alt="Alpha Channel"
-                  className="border rounded shadow-sm"
+                  className="border rounded shadow-sm max-w-full h-auto"
                 />
               </div>
             </>
