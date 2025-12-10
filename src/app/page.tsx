@@ -11,9 +11,9 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-8 px-8 bg-white dark:bg-black sm:items-start">
+      <main className="flex min-h-screen w-full max-w-6xl flex-col items-center py-8 px-8 bg-white dark:bg-black">
         {/* Component Switcher */}
-        <div className="w-full mb-6">
+        <div className="w-full max-w-md mb-6">
           <div className="flex gap-2 bg-gray-100 p-1 rounded-lg">
             <button
               onClick={() => setActiveComponent("splitter")}
@@ -39,9 +39,11 @@ export default function Home() {
         </div>
 
         {/* Active Component */}
-        <div className="w-full">
-          {activeComponent === "splitter" && <ImageChannelSplitter />}
-          {activeComponent === "combiner" && <ImageChannelCombiner />}
+        <div className="w-full max-w-4xl flex justify-center">
+          <div className="w-full">
+            {activeComponent === "splitter" && <ImageChannelSplitter />}
+            {activeComponent === "combiner" && <ImageChannelCombiner />}
+          </div>
         </div>
       </main>
     </div>
