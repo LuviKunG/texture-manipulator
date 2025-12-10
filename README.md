@@ -1,36 +1,166 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Image Manipulator
 
-## Getting Started
+A powerful web-based image manipulation tool built with Next.js and TypeScript that allows you to split and combine image channels (RGBA) with ease.
 
-First, run the development server:
+## ✨ Features
+
+### 🔄 Channel Splitter
+
+- Upload any image and split it into separate RGBA channels
+- Visualize individual color channels as grayscale images
+- Download each channel as a separate image file
+- Real-time preview of all channels
+
+### 🎨 Channel Combiner
+
+- Combine separate channel images into a single RGBA image
+- Upload individual images for Red, Green, Blue, and Alpha channels
+- Set default values for channels when no image is provided
+- Interactive sliders for fine-tuning default channel values
+- Real-time preview of the combined result
+
+### 🎯 Key Capabilities
+
+- **Multi-format Support**: Works with PNG, JPEG, WebP, and other common image formats
+- **High Quality Processing**: Maintains image quality during channel manipulation
+- **Intuitive Interface**: Clean, modern UI with dark/light theme support
+- **Real-time Processing**: Instant feedback as you adjust parameters
+- **Download Ready**: Export results in high quality PNG format
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/thanut-translucia/image-manipulator.git
+cd image-manipulator
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Start the development server:
 
-## Learn More
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Production Build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Build for production
+pnpm build
 
-## Deploy on Vercel
+# Start production server
+pnpm start
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Export static files
+pnpm export
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16.0.8
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS 4
+- **UI**: React 19.2.1
+- **Linting**: ESLint 9
+- **Formatting**: Prettier 3.7.4
+
+## 📱 Usage
+
+### Channel Splitter
+
+1. Click on "Channel Splitter" tab
+2. Upload an image using the file input
+3. View the original image and its separated RGBA channels
+4. Download individual channels by clicking the download buttons
+
+### Channel Combiner
+
+1. Click on "Channel Combiner" tab
+2. Upload separate images for each channel (R, G, B, A) or use default values
+3. Adjust default values using the sliders when no image is uploaded for a channel
+4. Preview the combined result in real-time
+5. Download the final combined image
+
+## 🎨 Use Cases
+
+- **Texture Creation**: Split textures to edit individual channels for game development
+- **Alpha Channel Editing**: Separate and modify transparency information
+- **Digital Art**: Create artistic effects by manipulating individual color channels
+- **Image Analysis**: Analyze color distribution across different channels
+- **Batch Processing**: Process multiple images through channel manipulation
+- **Educational**: Learn about color theory and image composition
+
+## 📂 Project Structure
+
+```
+src/
+├── app/
+│   ├── globals.css          # Global styles
+│   ├── layout.tsx           # Root layout component
+│   ├── page.tsx             # Main application page
+│   └── not-found.tsx        # 404 page
+└── components/
+    ├── imagechannelsplitter.tsx    # Channel splitting component
+    └── imagechannelcombiner.tsx    # Channel combining component
+```
+
+## 🔧 Development
+
+### Code Formatting
+
+```bash
+# Format code
+pnpm format
+
+# Check formatting
+pnpm format:check
+```
+
+### Linting
+
+```bash
+pnpm lint
+```
+
+## 🌐 Deployment
+
+This project is configured for deployment on GitHub Pages:
+
+```bash
+pnpm export
+```
+
+The built files will be in the `out/` directory, ready for static hosting.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Icons and UI components for enhanced user experience
