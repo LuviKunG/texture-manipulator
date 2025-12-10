@@ -151,7 +151,7 @@ export default function ImageChannelSplitter() {
 
   return (
     <div className="p-4 space-y-6">
-      <h2 className="text-xl font-bold">Image Channel Separator</h2>
+      <h2 className="text-xl font-bold">Image Channel Splitter</h2>
 
       <p className="text-gray-600 text-sm">
         Upload an image to split it into separate RGBA channels. Each channel
