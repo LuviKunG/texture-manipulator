@@ -12,6 +12,7 @@
     ".next": true,
     ".prettierignore": true,
     ".prettierrc": true,
+    ".vscode": true,
     "eslint.config.*": true,
     "next-env.d.ts": true,
     "node_modules": true,
