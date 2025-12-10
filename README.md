@@ -1,6 +1,7 @@
 # Image Manipulator
 
-A powerful web-based image manipulation tool built with Next.js and TypeScript that allows you to split and combine image channels (RGBA) with ease.
+A powerful web-based image manipulation tool built with Next.js and TypeScript
+that allows you to split and combine image channels (RGBA) with ease.
 
 ## ✨ Features
 
@@ -107,7 +108,7 @@ pnpm export
 
 ## 📂 Project Structure
 
-```
+```text
 src/
 ├── app/
 │   ├── globals.css          # Global styles
