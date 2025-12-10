@@ -108,7 +108,7 @@ pnpm export
 
 ## 📂 Project Structure
 
-```
+```text
 src/
 ├── app/
 │   ├── globals.css          # Global styles
