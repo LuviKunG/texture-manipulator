@@ -225,6 +225,23 @@ export default function ImageChannelCombiner() {
     if (alphaInputRef.current) alphaInputRef.current.value = "";
   };
 
+  // Clear a specific channel
+  const clearChannel = (channel: ChannelType) => {
+    setChannels(prev => ({
+      ...prev,
+      [channel]: { imageData: null, pixels: null, dimensions: { w: 0, h: 0 } }
+    }));
+    
+    // Reset specific file input
+    const inputRef = channel === 'red' ? redInputRef :
+                    channel === 'green' ? greenInputRef :
+                    channel === 'blue' ? blueInputRef : alphaInputRef;
+    
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   const loadedChannelsCount = Object.values(channels).filter(
     (ch) => ch.pixels !== null
   ).length;
@@ -244,9 +261,19 @@ export default function ImageChannelCombiner() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Red Channel */}
         <div className="border rounded p-4">
-          <label className="block font-semibold text-red-600 mb-2">
-            Red Channel
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="font-semibold text-red-600">
+              Red Channel
+            </label>
+            {channels.red.imageData && (
+              <button
+                onClick={() => clearChannel("red")}
+                className="px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <input
             ref={redInputRef}
             type="file"
@@ -265,9 +292,19 @@ export default function ImageChannelCombiner() {
 
         {/* Green Channel */}
         <div className="border rounded p-4">
-          <label className="block font-semibold text-green-600 mb-2">
-            Green Channel
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="font-semibold text-green-600">
+              Green Channel
+            </label>
+            {channels.green.imageData && (
+              <button
+                onClick={() => clearChannel("green")}
+                className="px-2 py-1 text-xs bg-green-100 text-green-600 rounded hover:bg-green-200"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <input
             ref={greenInputRef}
             type="file"
@@ -286,9 +323,19 @@ export default function ImageChannelCombiner() {
 
         {/* Blue Channel */}
         <div className="border rounded p-4">
-          <label className="block font-semibold text-blue-600 mb-2">
-            Blue Channel
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="font-semibold text-blue-600">
+              Blue Channel
+            </label>
+            {channels.blue.imageData && (
+              <button
+                onClick={() => clearChannel("blue")}
+                className="px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded hover:bg-blue-200"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <input
             ref={blueInputRef}
             type="file"
@@ -307,9 +354,19 @@ export default function ImageChannelCombiner() {
 
         {/* Alpha Channel */}
         <div className="border rounded p-4">
-          <label className="block font-semibold text-gray-600 mb-2">
-            Alpha Channel (Optional)
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="font-semibold text-gray-600">
+              Alpha Channel (Optional)
+            </label>
+            {channels.alpha.imageData && (
+              <button
+                onClick={() => clearChannel("alpha")}
+                className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+              >
+                Clear
+              </button>
+            )}
+          </div>
           <input
             ref={alphaInputRef}
             type="file"
