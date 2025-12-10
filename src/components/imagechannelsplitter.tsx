@@ -129,7 +129,7 @@ export default function ImageChannelSplitter() {
   const downloadChannel = (imageData: string, channelName: string) => {
     if (!imageData) return;
 
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = imageData;
     link.download = `${channelName}-channel.png`;
     document.body.appendChild(link);
@@ -153,8 +153,13 @@ export default function ImageChannelSplitter() {
     <div className="p-4 space-y-6">
       <h2 className="text-xl font-bold">Image Channel Separator</h2>
 
+      <p className="text-gray-600 text-sm">
+        Upload an image to split it into separate RGBA channels. Each channel
+        can be downloaded individually for editing or analysis.
+      </p>
+
       {/* Input Section */}
-      <div className="flex gap-4 items-center">
+      <div className="space-y-4">
         <input
           ref={fileInputRef}
           type="file"
@@ -162,27 +167,32 @@ export default function ImageChannelSplitter() {
           onChange={handleImageUpload}
           className="border p-2 rounded"
         />
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isGrayscale}
-            onChange={(e) => {
-              setIsGrayscale(e.target.checked);
-              updateChannelImages(e.target.checked);
-            }}
-            className="w-5 h-5"
-          />
-          <span className="font-medium">
-            Show as Grayscale Mask (easier to see)
-          </span>
-        </label>
+
+        {/* Action Buttons */}
         {originalImage && (
-          <button
-            onClick={clearAll}
-            className="px-4 py-2 border border-gray-300 rounded font-medium hover:bg-gray-50"
-          >
-            Clear All
-          </button>
+          <div className="flex gap-4 items-center">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isGrayscale}
+                onChange={(e) => {
+                  setIsGrayscale(e.target.checked);
+                  updateChannelImages(e.target.checked);
+                }}
+                className="w-5 h-5"
+              />
+              <span className="font-medium">
+                Show as Grayscale Mask (easier to see)
+              </span>
+            </label>
+
+            <button
+              onClick={clearAll}
+              className="px-4 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600"
+            >
+              Clear All
+            </button>
+          </div>
         )}
       </div>
 
@@ -224,9 +234,7 @@ export default function ImageChannelSplitter() {
               {/* Green Channel */}
               <div className="border rounded p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-green-600">
-                    Green Channel
-                  </p>
+                  <p className="font-semibold text-green-600">Green Channel</p>
                   <button
                     onClick={() => downloadChannel(channels.g, "green")}
                     className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600"
@@ -262,9 +270,7 @@ export default function ImageChannelSplitter() {
               {/* Alpha Channel */}
               <div className="border rounded p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-gray-600">
-                    Alpha Channel
-                  </p>
+                  <p className="font-semibold text-gray-600">Alpha Channel</p>
                   <button
                     onClick={() => downloadChannel(channels.a, "alpha")}
                     className="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"

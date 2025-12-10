@@ -27,7 +27,7 @@ export default function ImageChannelCombiner() {
   const [combinedImage, setCombinedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Default values for channels when no file is loaded
   const [defaultValues, setDefaultValues] = useState<{
     red: number;
@@ -240,16 +240,21 @@ export default function ImageChannelCombiner() {
 
   // Clear a specific channel
   const clearChannel = (channel: ChannelType) => {
-    setChannels(prev => ({
+    setChannels((prev) => ({
       ...prev,
-      [channel]: { imageData: null, pixels: null, dimensions: { w: 0, h: 0 } }
+      [channel]: { imageData: null, pixels: null, dimensions: { w: 0, h: 0 } },
     }));
-    
+
     // Reset specific file input
-    const inputRef = channel === 'red' ? redInputRef :
-                    channel === 'green' ? greenInputRef :
-                    channel === 'blue' ? blueInputRef : alphaInputRef;
-    
+    const inputRef =
+      channel === "red"
+        ? redInputRef
+        : channel === "green"
+        ? greenInputRef
+        : channel === "blue"
+        ? blueInputRef
+        : alphaInputRef;
+
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -265,8 +270,9 @@ export default function ImageChannelCombiner() {
       <h2 className="text-xl font-bold">Image Channel Combiner</h2>
 
       <p className="text-gray-600 text-sm">
-        Upload separate channel images to combine them into a single image. 
-        For channels without files, you can select default values (Black, Gray, or White).
+        Upload separate channel images to combine them into a single image. For
+        channels without files, you can select default values (Black, Gray, or
+        White).
       </p>
 
       {/* Channel Upload Section */}
@@ -274,9 +280,7 @@ export default function ImageChannelCombiner() {
         {/* Red Channel */}
         <div className="border rounded p-4">
           <div className="flex justify-between items-center mb-2">
-            <label className="font-semibold text-red-600">
-              Red Channel
-            </label>
+            <label className="font-semibold text-red-600">Red Channel</label>
             {channels.red.imageData && (
               <button
                 onClick={() => clearChannel("red")}
@@ -295,10 +299,17 @@ export default function ImageChannelCombiner() {
           />
           {!channels.red.imageData && (
             <div className="mb-2">
-              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <label className="block text-xs text-gray-600 mb-1">
+                Default value:
+              </label>
               <select
                 value={defaultValues.red}
-                onChange={(e) => setDefaultValues(prev => ({ ...prev, red: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setDefaultValues((prev) => ({
+                    ...prev,
+                    red: Number(e.target.value),
+                  }))
+                }
                 className="w-full text-sm border rounded p-1"
               >
                 <option value={0}>Black (0)</option>
@@ -340,10 +351,17 @@ export default function ImageChannelCombiner() {
           />
           {!channels.green.imageData && (
             <div className="mb-2">
-              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <label className="block text-xs text-gray-600 mb-1">
+                Default value:
+              </label>
               <select
                 value={defaultValues.green}
-                onChange={(e) => setDefaultValues(prev => ({ ...prev, green: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setDefaultValues((prev) => ({
+                    ...prev,
+                    green: Number(e.target.value),
+                  }))
+                }
                 className="w-full text-sm border rounded p-1"
               >
                 <option value={0}>Black (0)</option>
@@ -364,9 +382,7 @@ export default function ImageChannelCombiner() {
         {/* Blue Channel */}
         <div className="border rounded p-4">
           <div className="flex justify-between items-center mb-2">
-            <label className="font-semibold text-blue-600">
-              Blue Channel
-            </label>
+            <label className="font-semibold text-blue-600">Blue Channel</label>
             {channels.blue.imageData && (
               <button
                 onClick={() => clearChannel("blue")}
@@ -385,10 +401,17 @@ export default function ImageChannelCombiner() {
           />
           {!channels.blue.imageData && (
             <div className="mb-2">
-              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <label className="block text-xs text-gray-600 mb-1">
+                Default value:
+              </label>
               <select
                 value={defaultValues.blue}
-                onChange={(e) => setDefaultValues(prev => ({ ...prev, blue: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setDefaultValues((prev) => ({
+                    ...prev,
+                    blue: Number(e.target.value),
+                  }))
+                }
                 className="w-full text-sm border rounded p-1"
               >
                 <option value={0}>Black (0)</option>
@@ -430,10 +453,17 @@ export default function ImageChannelCombiner() {
           />
           {!channels.alpha.imageData && (
             <div className="mb-2">
-              <label className="block text-xs text-gray-600 mb-1">Default value:</label>
+              <label className="block text-xs text-gray-600 mb-1">
+                Default value:
+              </label>
               <select
                 value={defaultValues.alpha}
-                onChange={(e) => setDefaultValues(prev => ({ ...prev, alpha: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setDefaultValues((prev) => ({
+                    ...prev,
+                    alpha: Number(e.target.value),
+                  }))
+                }
                 className="w-full text-sm border rounded p-1"
               >
                 <option value={0}>Transparent (0)</option>
@@ -468,7 +498,7 @@ export default function ImageChannelCombiner() {
 
         <button
           onClick={clearAll}
-          className="px-4 py-2 border border-gray-300 rounded font-medium hover:bg-gray-50"
+          className="px-4 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600"
         >
           Clear All
         </button>
