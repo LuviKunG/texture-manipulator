@@ -21,7 +21,7 @@
     "format:check": "prettier --check .",
     "electron": "electron .",
     "electron:dev": "concurrently \"cross-env NODE_ENV=development npm run dev\" \"wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .\"",
-    "electron:pack": "electron-builder",
+    "electron:pack": "electron-builder --win",
     "electron:dist": "cross-env ELECTRON=true npm run build && electron-builder",
     "build:electron": "cross-env ELECTRON=true npm run build && tsc -p tsconfig.electron.json",
     "preelectron:pack": "npm run build:electron",
