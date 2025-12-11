@@ -198,13 +198,6 @@ export default function ImageChannelSplitter() {
             >
               Grayscale
             </button>
-
-            <button
-              onClick={clearAll}
-              className='px-4 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600'
-            >
-              Clear All
-            </button>
           </div>
         )}
       </div>
@@ -299,6 +292,18 @@ export default function ImageChannelSplitter() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Clear All Button at Bottom */}
+      {originalImage && (
+        <div className='flex justify-start'>
+          <button
+            onClick={clearAll}
+            className='px-4 py-2 bg-gray-500 text-white rounded font-medium hover:bg-gray-600'
+          >
+            Clear All
+          </button>
         </div>
       )}
     </div>
