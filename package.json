@@ -1,6 +1,13 @@
 {
   "name": "image-manipulator",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": {
+    "name": "Thanut Panichyotai (@LuviKunG)",
+    "email": "luvikung@gmail.com",
+    "url": "https://luvikung.github.io"
+  },
+  "description": "A simple image manipulation application built with Next.js and Electron.",
+  "license": "MIT",
   "private": true,
   "main": "dist/main.js",
   "homepage": "https://thanut-translucia.github.io/image-manipulator",
