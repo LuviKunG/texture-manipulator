@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, ChangeEvent } from 'react';
+import { useState, useRef, ChangeEvent, DragEvent } from 'react';
 
 // Helper type for our channel data
 type ChannelData = {
@@ -12,6 +12,9 @@ type ChannelData = {
 type ChannelType = 'red' | 'green' | 'blue' | 'alpha';
 
 export default function ImageChannelCombiner() {
+  const [dragOverChannel, setDragOverChannel] = useState<ChannelType | null>(
+    null
+  );
   const [channels, setChannels] = useState<{
     red: ChannelData;
     green: ChannelData;
@@ -55,6 +58,39 @@ export default function ImageChannelCombiner() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    processChannelFile(channel, file);
+  };
+
+  // Handle drag and drop for channels
+  const handleChannelDragOver = (
+    channel: ChannelType,
+    e: DragEvent<HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    setDragOverChannel(channel);
+  };
+
+  const handleChannelDragLeave = (
+    channel: ChannelType,
+    e: DragEvent<HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    setDragOverChannel(null);
+  };
+
+  const handleChannelDrop = (
+    channel: ChannelType,
+    e: DragEvent<HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    setDragOverChannel(null);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      processChannelFile(channel, file);
+    }
+  };
+
+  const processChannelFile = (channel: ChannelType, file: File) => {
     const reader = new FileReader();
     reader.onload = event => {
       const result = event.target?.result as string;
@@ -288,13 +324,27 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <input
-            ref={redInputRef}
-            type='file'
-            accept='image/*'
-            onChange={e => handleChannelUpload('red', e)}
-            className='block w-full text-sm border rounded p-2 mb-2'
-          />
+          <div
+            className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${
+              dragOverChannel === 'red'
+                ? 'border-red-400 bg-red-50'
+                : 'border-gray-300 hover:border-red-300'
+            }`}
+            onDragOver={e => handleChannelDragOver('red', e)}
+            onDragLeave={e => handleChannelDragLeave('red', e)}
+            onDrop={e => handleChannelDrop('red', e)}
+          >
+            <input
+              ref={redInputRef}
+              type='file'
+              accept='image/*'
+              onChange={e => handleChannelUpload('red', e)}
+              className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+            />
+            <div className='text-xs text-gray-600'>
+              Click or drag red channel image
+            </div>
+          </div>
           {!channels.red.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
@@ -340,13 +390,27 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <input
-            ref={greenInputRef}
-            type='file'
-            accept='image/*'
-            onChange={e => handleChannelUpload('green', e)}
-            className='block w-full text-sm border rounded p-2 mb-2'
-          />
+          <div
+            className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${
+              dragOverChannel === 'green'
+                ? 'border-green-400 bg-green-50'
+                : 'border-gray-300 hover:border-green-300'
+            }`}
+            onDragOver={e => handleChannelDragOver('green', e)}
+            onDragLeave={e => handleChannelDragLeave('green', e)}
+            onDrop={e => handleChannelDrop('green', e)}
+          >
+            <input
+              ref={greenInputRef}
+              type='file'
+              accept='image/*'
+              onChange={e => handleChannelUpload('green', e)}
+              className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+            />
+            <div className='text-xs text-gray-600'>
+              Click or drag green channel image
+            </div>
+          </div>
           {!channels.green.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
@@ -390,13 +454,27 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <input
-            ref={blueInputRef}
-            type='file'
-            accept='image/*'
-            onChange={e => handleChannelUpload('blue', e)}
-            className='block w-full text-sm border rounded p-2 mb-2'
-          />
+          <div
+            className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${
+              dragOverChannel === 'blue'
+                ? 'border-blue-400 bg-blue-50'
+                : 'border-gray-300 hover:border-blue-300'
+            }`}
+            onDragOver={e => handleChannelDragOver('blue', e)}
+            onDragLeave={e => handleChannelDragLeave('blue', e)}
+            onDrop={e => handleChannelDrop('blue', e)}
+          >
+            <input
+              ref={blueInputRef}
+              type='file'
+              accept='image/*'
+              onChange={e => handleChannelUpload('blue', e)}
+              className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+            />
+            <div className='text-xs text-gray-600'>
+              Click or drag blue channel image
+            </div>
+          </div>
           {!channels.blue.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
@@ -442,13 +520,27 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <input
-            ref={alphaInputRef}
-            type='file'
-            accept='image/*'
-            onChange={e => handleChannelUpload('alpha', e)}
-            className='block w-full text-sm border rounded p-2 mb-2'
-          />
+          <div
+            className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${
+              dragOverChannel === 'alpha'
+                ? 'border-gray-400 bg-gray-50'
+                : 'border-gray-300 hover:border-gray-400'
+            }`}
+            onDragOver={e => handleChannelDragOver('alpha', e)}
+            onDragLeave={e => handleChannelDragLeave('alpha', e)}
+            onDrop={e => handleChannelDrop('alpha', e)}
+          >
+            <input
+              ref={alphaInputRef}
+              type='file'
+              accept='image/*'
+              onChange={e => handleChannelUpload('alpha', e)}
+              className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+            />
+            <div className='text-xs text-gray-600'>
+              Click or drag alpha channel image
+            </div>
+          </div>
           {!channels.alpha.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
