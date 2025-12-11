@@ -348,7 +348,7 @@ export default function ImageChannelCombiner() {
                     red: Number(e.target.value),
                   }))
                 }
-                className='w-full text-sm border rounded p-1'
+                className='w-full text-sm border rounded p-1 bg-black text-white border-gray-300'
               >
                 <option value={0}>Black (0)</option>
                 <option value={128}>Gray (128)</option>
@@ -403,7 +403,7 @@ export default function ImageChannelCombiner() {
                     green: Number(e.target.value),
                   }))
                 }
-                className='w-full text-sm border rounded p-1'
+                className='w-full text-sm border rounded p-1 bg-black text-white border-gray-300'
               >
                 <option value={0}>Black (0)</option>
                 <option value={128}>Gray (128)</option>
@@ -456,7 +456,7 @@ export default function ImageChannelCombiner() {
                     blue: Number(e.target.value),
                   }))
                 }
-                className='w-full text-sm border rounded p-1'
+                className='w-full text-sm border rounded p-1 bg-black text-white border-gray-300'
               >
                 <option value={0}>Black (0)</option>
                 <option value={128}>Gray (128)</option>
@@ -511,7 +511,7 @@ export default function ImageChannelCombiner() {
                     alpha: Number(e.target.value),
                   }))
                 }
-                className='w-full text-sm border rounded p-1'
+                className='w-full text-sm border rounded p-1 bg-black text-white border-gray-300'
               >
                 <option value={0}>Transparent (0)</option>
                 <option value={128}>Semi-transparent (128)</option>
