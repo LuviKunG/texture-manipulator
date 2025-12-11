@@ -19,32 +19,36 @@ export default function Home() {
   return (
     <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
       <main className='flex min-h-screen w-full max-w-6xl flex-col items-center py-8 px-8 bg-white dark:bg-black'>
+        <h1 className='text-4xl font-bold mb-8 text-gray-900 dark:text-white'>
+          Texture Manipulator
+        </h1>
+
         {/* Component Switcher */}
-        <div className='w-full max-w-2xl mb-6'>
-          <div className='flex gap-2 bg-gray-100 p-1 rounded-lg'>
+        <div className='w-auto mb-6'>
+          <div className='flex flex-wrap gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg justify-center'>
             <button
               onClick={() => setActiveComponent(TabType.SPLITTER)}
-              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${activeComponent === TabType.SPLITTER
+              className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${activeComponent === TabType.SPLITTER
                   ? 'bg-blue-500 text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
             >
               Channel Splitter
             </button>
             <button
               onClick={() => setActiveComponent(TabType.COMBINER)}
-              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${activeComponent === TabType.COMBINER
+              className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${activeComponent === TabType.COMBINER
                   ? 'bg-blue-500 text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
             >
               Channel Combiner
             </button>
             <button
               onClick={() => setActiveComponent(TabType.RESIZER)}
-              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${activeComponent === TabType.RESIZER
+              className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${activeComponent === TabType.RESIZER
                   ? 'bg-blue-500 text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
             >
               Texture Resizer
