@@ -19,7 +19,7 @@ function createWindow(): void {
       contextIsolation: true,
       webSecurity: true,
     },
-    icon: path.join(__dirname, '../public/favicon.ico'),
+    icon: path.join(__dirname, '../assets/icon.ico'),
     show: false, // Don't show until ready-to-show
     titleBarStyle: 'default',
   });
