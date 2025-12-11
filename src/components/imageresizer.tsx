@@ -265,13 +265,15 @@ export default function ImageResizer() {
 
       {/* File Upload */}
       <div className='space-y-4'>
-        <DragDropUploadBig
-          onFileSelect={processFile}
-          isDragOver={isDragOver}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        />
+        {!originalImage && (
+          <DragDropUploadBig
+            onFileSelect={processFile}
+            isDragOver={isDragOver}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          />
+        )}
       </div>
 
       {/* Original Image Info */}

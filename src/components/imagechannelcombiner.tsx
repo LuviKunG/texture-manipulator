@@ -325,14 +325,16 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <DragDropUploadSmall
-            onFileSelect={file => processChannelFile('red', file)}
-            isDragOver={dragOverChannel === 'red'}
-            onDragOver={e => handleChannelDragOver('red', e)}
-            onDragLeave={e => handleChannelDragLeave('red', e)}
-            onDrop={e => handleChannelDrop('red', e)}
-            placeholder='Click or drag red channel image'
-          />
+          {!channels.red.imageData && (
+            <DragDropUploadSmall
+              onFileSelect={file => processChannelFile('red', file)}
+              isDragOver={dragOverChannel === 'red'}
+              onDragOver={e => handleChannelDragOver('red', e)}
+              onDragLeave={e => handleChannelDragLeave('red', e)}
+              onDrop={e => handleChannelDrop('red', e)}
+              placeholder='Click or drag red channel image'
+            />
+          )}
           {!channels.red.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
@@ -378,14 +380,16 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <DragDropUploadSmall
-            onFileSelect={file => processChannelFile('green', file)}
-            isDragOver={dragOverChannel === 'green'}
-            onDragOver={e => handleChannelDragOver('green', e)}
-            onDragLeave={e => handleChannelDragLeave('green', e)}
-            onDrop={e => handleChannelDrop('green', e)}
-            placeholder='Click or drag green channel image'
-          />
+          {!channels.green.imageData && (
+            <DragDropUploadSmall
+              onFileSelect={file => processChannelFile('green', file)}
+              isDragOver={dragOverChannel === 'green'}
+              onDragOver={e => handleChannelDragOver('green', e)}
+              onDragLeave={e => handleChannelDragLeave('green', e)}
+              onDrop={e => handleChannelDrop('green', e)}
+              placeholder='Click or drag green channel image'
+            />
+          )}
           {!channels.green.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
@@ -429,14 +433,16 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <DragDropUploadSmall
-            onFileSelect={file => processChannelFile('blue', file)}
-            isDragOver={dragOverChannel === 'blue'}
-            onDragOver={e => handleChannelDragOver('blue', e)}
-            onDragLeave={e => handleChannelDragLeave('blue', e)}
-            onDrop={e => handleChannelDrop('blue', e)}
-            placeholder='Click or drag blue channel image'
-          />
+          {!channels.blue.imageData && (
+            <DragDropUploadSmall
+              onFileSelect={file => processChannelFile('blue', file)}
+              isDragOver={dragOverChannel === 'blue'}
+              onDragOver={e => handleChannelDragOver('blue', e)}
+              onDragLeave={e => handleChannelDragLeave('blue', e)}
+              onDrop={e => handleChannelDrop('blue', e)}
+              placeholder='Click or drag blue channel image'
+            />
+          )}
           {!channels.blue.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
@@ -482,14 +488,16 @@ export default function ImageChannelCombiner() {
               </button>
             )}
           </div>
-          <DragDropUploadSmall
-            onFileSelect={file => processChannelFile('alpha', file)}
-            isDragOver={dragOverChannel === 'alpha'}
-            onDragOver={e => handleChannelDragOver('alpha', e)}
-            onDragLeave={e => handleChannelDragLeave('alpha', e)}
-            onDrop={e => handleChannelDrop('alpha', e)}
-            placeholder='Click or drag alpha channel image'
-          />
+          {!channels.alpha.imageData && (
+            <DragDropUploadSmall
+              onFileSelect={file => processChannelFile('alpha', file)}
+              isDragOver={dragOverChannel === 'alpha'}
+              onDragOver={e => handleChannelDragOver('alpha', e)}
+              onDragLeave={e => handleChannelDragLeave('alpha', e)}
+              onDrop={e => handleChannelDrop('alpha', e)}
+              placeholder='Click or drag alpha channel image'
+            />
+          )}
           {!channels.alpha.imageData && (
             <div className='mb-2'>
               <label className='block text-xs text-gray-600 mb-1'>
