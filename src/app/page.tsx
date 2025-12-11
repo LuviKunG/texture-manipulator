@@ -26,7 +26,7 @@ export default function Home() {
               onClick={() => setActiveComponent(TabType.SPLITTER)}
               className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
                 activeComponent === TabType.SPLITTER
-                  ? 'bg-white text-gray-900 shadow-sm'
+                  ? 'bg-blue-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -36,7 +36,7 @@ export default function Home() {
               onClick={() => setActiveComponent(TabType.COMBINER)}
               className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
                 activeComponent === TabType.COMBINER
-                  ? 'bg-white text-gray-900 shadow-sm'
+                  ? 'bg-blue-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -46,7 +46,7 @@ export default function Home() {
               onClick={() => setActiveComponent(TabType.RESIZER)}
               className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
                 activeComponent === TabType.RESIZER
-                  ? 'bg-white text-gray-900 shadow-sm'
+                  ? 'bg-blue-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
