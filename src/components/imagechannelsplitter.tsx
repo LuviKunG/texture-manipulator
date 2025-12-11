@@ -7,7 +7,7 @@ type ChannelType = 'red' | 'green' | 'blue' | 'alpha';
 
 export default function ImageChannelSplitter() {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
-  const [isGrayscale, setIsGrayscale] = useState(false);
+  const [isGrayscale, setIsGrayscale] = useState(true);
   const [isDragOver, setIsDragOver] = useState(false);
   const [channels, setChannels] = useState<{
     r: string;
