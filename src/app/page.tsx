@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import ImageChannelSplitter from '@/components/imagechannelsplitter';
-import ImageChannelCombiner from '@/components/imagechannelcombiner';
-import ImageResizer from '@/components/imageresizer';
+import TextureChannelSplitter from '@/components/texturechannelsplitter';
+import TextureChannelCombiner from '@/components/texturechannelcombiner';
+import TextureResizer from '@/components/textureresizer';
 
 enum TabType {
   SPLITTER = 'splitter',
@@ -24,33 +24,30 @@ export default function Home() {
           <div className='flex gap-2 bg-gray-100 p-1 rounded-lg'>
             <button
               onClick={() => setActiveComponent(TabType.SPLITTER)}
-              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
-                activeComponent === TabType.SPLITTER
+              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${activeComponent === TabType.SPLITTER
                   ? 'bg-blue-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               Channel Splitter
             </button>
             <button
               onClick={() => setActiveComponent(TabType.COMBINER)}
-              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
-                activeComponent === TabType.COMBINER
+              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${activeComponent === TabType.COMBINER
                   ? 'bg-blue-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               Channel Combiner
             </button>
             <button
               onClick={() => setActiveComponent(TabType.RESIZER)}
-              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${
-                activeComponent === TabType.RESIZER
+              className={`flex-1 px-4 py-2 rounded-md font-medium transition-colors ${activeComponent === TabType.RESIZER
                   ? 'bg-blue-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
-              Image Resizer
+              Texture Resizer
             </button>
           </div>
         </div>
@@ -58,9 +55,9 @@ export default function Home() {
         {/* Active Component */}
         <div className='w-full max-w-4xl flex justify-center'>
           <div className='w-full'>
-            {activeComponent === TabType.SPLITTER && <ImageChannelSplitter />}
-            {activeComponent === TabType.COMBINER && <ImageChannelCombiner />}
-            {activeComponent === TabType.RESIZER && <ImageResizer />}
+            {activeComponent === TabType.SPLITTER && <TextureChannelSplitter />}
+            {activeComponent === TabType.COMBINER && <TextureChannelCombiner />}
+            {activeComponent === TabType.RESIZER && <TextureResizer />}
           </div>
         </div>
       </main>

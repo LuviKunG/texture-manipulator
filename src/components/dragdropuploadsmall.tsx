@@ -41,11 +41,10 @@ export default function DragDropUploadSmall({
 
   return (
     <div
-      className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${
-        isDragOver
+      className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${isDragOver
           ? 'border-blue-400 bg-blue-50'
           : 'border-gray-300 hover:border-gray-400'
-      } ${className}`}
+        } ${className}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -58,7 +57,7 @@ export default function DragDropUploadSmall({
         className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
       />
       <div className='text-xs text-gray-600'>
-        {placeholder || 'Click or drag image'}
+        {placeholder || 'Click or drag texture'}
       </div>
     </div>
   );

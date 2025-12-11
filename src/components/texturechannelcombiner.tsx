@@ -12,7 +12,7 @@ type ChannelData = {
 
 type ChannelType = 'red' | 'green' | 'blue' | 'alpha';
 
-export default function ImageChannelCombiner() {
+export default function TextureChannelCombiner() {
   const [dragOverChannel, setDragOverChannel] = useState<ChannelType | null>(
     null
   );
@@ -28,7 +28,7 @@ export default function ImageChannelCombiner() {
     alpha: { imageData: null, pixels: null, dimensions: { w: 0, h: 0 } },
   });
 
-  const [combinedImage, setCombinedImage] = useState<string | null>(null);
+  const [combinedTexture, setCombinedTexture] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -216,7 +216,7 @@ export default function ImageChannelCombiner() {
       }
 
       ctx.putImageData(outputImageData, 0, 0);
-      setCombinedImage(canvas.toDataURL());
+      setCombinedTexture(canvas.toDataURL());
     } catch (err) {
       setError(
         `Failed to combine channels: ${err instanceof Error ? err.message : 'Unknown error'}`
@@ -244,12 +244,12 @@ export default function ImageChannelCombiner() {
     return Math.max(r, g, b);
   };
 
-  // Download the combined image
-  const downloadImage = () => {
-    if (!combinedImage) return;
+  // Download the combined texture
+  const downloadTexture = () => {
+    if (!combinedTexture) return;
 
     const link = document.createElement('a');
-    link.href = combinedImage;
+    link.href = combinedTexture;
     link.download = 'combined-channels.png';
     document.body.appendChild(link);
     link.click();
@@ -264,7 +264,7 @@ export default function ImageChannelCombiner() {
       blue: { imageData: null, pixels: null, dimensions: { w: 0, h: 0 } },
       alpha: { imageData: null, pixels: null, dimensions: { w: 0, h: 0 } },
     });
-    setCombinedImage(null);
+    setCombinedTexture(null);
     setError(null);
     // Reset file inputs
     if (redInputRef.current) redInputRef.current.value = '';
@@ -302,10 +302,10 @@ export default function ImageChannelCombiner() {
 
   return (
     <div className='p-4 space-y-6'>
-      <h2 className='text-xl font-bold'>Image Channel Combiner</h2>
+      <h2 className='text-xl font-bold'>Texture Channel Combiner</h2>
 
       <p className='text-gray-600 text-sm'>
-        Upload separate channel images to combine them into a single image. For
+        Upload separate channel textures to combine them into a single texture. For
         channels without files, you can select default values (Black, Gray, or
         White).
       </p>
@@ -534,11 +534,10 @@ export default function ImageChannelCombiner() {
         <button
           onClick={combineChannels}
           disabled={!canCombine || isProcessing}
-          className={`px-4 py-2 rounded font-medium ${
-            canCombine && !isProcessing
+          className={`px-4 py-2 rounded font-medium ${canCombine && !isProcessing
               ? 'bg-blue-500 text-white hover:bg-blue-600'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+            }`}
         >
           {isProcessing ? 'Combining...' : 'Combine Channels'}
         </button>
@@ -550,9 +549,9 @@ export default function ImageChannelCombiner() {
           Clear All
         </button>
 
-        {combinedImage && (
+        {combinedTexture && (
           <button
-            onClick={downloadImage}
+            onClick={downloadTexture}
             className='px-4 py-2 bg-green-500 text-white rounded font-medium hover:bg-green-600'
           >
             Download Combined Image
@@ -580,11 +579,11 @@ export default function ImageChannelCombiner() {
       )}
 
       {/* Combined Result */}
-      {combinedImage && (
+      {combinedTexture && (
         <div className='space-y-2'>
           <h3 className='font-semibold text-lg'>Combined Result</h3>
           <img
-            src={combinedImage}
+            src={combinedTexture}
             alt='Combined channels result'
             className='border rounded shadow-sm max-w-full h-auto'
           />

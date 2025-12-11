@@ -6,8 +6,8 @@ import DragDropUploadBig from './dragdropuploadbig';
 // Helper type for our channel processing
 type ChannelType = 'red' | 'green' | 'blue' | 'alpha';
 
-export default function ImageChannelSplitter() {
-  const [originalImage, setOriginalImage] = useState<string | null>(null);
+export default function TextureChannelSplitter() {
+  const [originalTexture, setOriginalTexture] = useState<string | null>(null);
   const [isGrayscale, setIsGrayscale] = useState(true);
   const [isDragOver, setIsDragOver] = useState(false);
   const [channels, setChannels] = useState<{
@@ -47,12 +47,12 @@ export default function ImageChannelSplitter() {
     const reader = new FileReader();
     reader.onload = event => {
       const result = event.target?.result as string;
-      setOriginalImage(result);
-      loadImageAndProcess(result);
+      setOriginalTexture(result);
+      loadTextureAndProcess(result);
     };
     reader.readAsDataURL(file);
   };
-  const loadImageAndProcess = (src: string) => {
+  const loadTextureAndProcess = (src: string) => {
     const img = new Image();
     img.onload = () => {
       // 1. SAFEGUARD: Use natural dimensions
@@ -151,9 +151,9 @@ export default function ImageChannelSplitter() {
     document.body.removeChild(link);
   };
 
-  // Clear all images and reset state
+  // Clear all textures and reset state
   const clearAll = () => {
-    setOriginalImage(null);
+    setOriginalTexture(null);
     setChannels({ r: '', g: '', b: '', a: '' });
     sourcePixelsRef.current = null;
     dimensionsRef.current = { w: 0, h: 0 };
@@ -165,16 +165,16 @@ export default function ImageChannelSplitter() {
 
   return (
     <div className='p-4 space-y-6'>
-      <h2 className='text-xl font-bold'>Image Channel Splitter</h2>
+      <h2 className='text-xl font-bold'>Texture Channel Splitter</h2>
 
       <p className='text-gray-600 text-sm'>
-        Upload an image to split it into separate RGBA channels. Each channel
+        Upload a texture to split it into separate RGBA channels. Each channel
         can be downloaded individually for editing or analysis.
       </p>
 
       {/* Input Section */}
       <div className='space-y-4'>
-        {!originalImage && (
+        {!originalTexture && (
           <DragDropUploadBig
             onFileSelect={processFile}
             isDragOver={isDragOver}
@@ -185,18 +185,17 @@ export default function ImageChannelSplitter() {
         )}
 
         {/* Action Buttons */}
-        {originalImage && (
+        {originalTexture && (
           <div className='flex gap-4 items-center'>
             <button
               onClick={() => {
                 setIsGrayscale(!isGrayscale);
                 updateChannelImages(!isGrayscale);
               }}
-              className={`px-4 py-2 rounded font-medium transition-colors ${
-                isGrayscale
+              className={`px-4 py-2 rounded font-medium transition-colors ${isGrayscale
                   ? 'bg-blue-500 text-white hover:bg-blue-600'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
+                }`}
             >
               Grayscale
             </button>
@@ -208,12 +207,12 @@ export default function ImageChannelSplitter() {
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {/* Display Results */}
-      {originalImage && (
+      {originalTexture && (
         <div className='flex flex-col gap-6'>
           <div>
             <p className='font-semibold mb-2'>Original</p>
             <img
-              src={originalImage}
+              src={originalTexture}
               alt='Original'
               className='border rounded shadow-sm max-w-full h-auto'
             />
@@ -298,7 +297,7 @@ export default function ImageChannelSplitter() {
       )}
 
       {/* Clear All Button at Bottom */}
-      {originalImage && (
+      {originalTexture && (
         <div className='flex justify-start'>
           <button
             onClick={clearAll}

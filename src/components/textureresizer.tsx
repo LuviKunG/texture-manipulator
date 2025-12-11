@@ -11,14 +11,14 @@ type PresetSize = {
   height: number;
 };
 
-export default function ImageResizer() {
-  const [originalImage, setOriginalImage] = useState<string | null>(null);
+export default function TextureResizer() {
+  const [originalTexture, setOriginalTexture] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [resizedImage, setResizedImage] = useState<string | null>(null);
+  const [resizedTexture, setResizedTexture] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Original image dimensions
+  // Original texture dimensions
   const [originalDimensions, setOriginalDimensions] = useState<{
     width: number;
     height: number;
@@ -32,7 +32,7 @@ export default function ImageResizer() {
   const [maintainAspectRatio, setMaintainAspectRatio] = useState<boolean>(true);
   const [selectedPreset, setSelectedPreset] = useState<string>('');
 
-  // Image quality for JPEG
+  // Texture quality for JPEG
   const [quality, setQuality] = useState<number>(90);
   const [outputFormat, setOutputFormat] = useState<'png' | 'jpeg' | 'webp'>(
     'png'
@@ -73,16 +73,16 @@ export default function ImageResizer() {
     const reader = new FileReader();
     reader.onload = event => {
       const result = event.target?.result as string;
-      setOriginalImage(result);
-      loadImageDimensions(result);
-      setResizedImage(null);
+      setOriginalTexture(result);
+      loadTextureDimensions(result);
+      setResizedTexture(null);
       setError(null);
     };
     reader.readAsDataURL(file);
   };
 
-  // Load original image dimensions
-  const loadImageDimensions = (src: string) => {
+  // Load original texture dimensions
+  const loadTextureDimensions = (src: string) => {
     const img = new Image();
     img.onload = () => {
       const dimensions = {
@@ -96,7 +96,7 @@ export default function ImageResizer() {
       setTargetHeight(dimensions.height);
     };
     img.onerror = () => {
-      setError('Failed to load image dimensions');
+      setError('Failed to load texture dimensions');
     };
     img.src = src;
   };
@@ -138,9 +138,9 @@ export default function ImageResizer() {
     }
   };
 
-  // Resize the image
-  const resizeImage = () => {
-    if (!originalImage) return;
+  // Resize the texture
+  const resizeTexture = () => {
+    if (!originalTexture) return;
 
     setIsProcessing(true);
     setError(null);
@@ -198,7 +198,7 @@ export default function ImageResizer() {
             outputFormat === 'png' ? undefined : quality / 100;
 
           const resizedDataUrl = canvas.toDataURL(mimeType, qualityValue);
-          setResizedImage(resizedDataUrl);
+          setResizedTexture(resizedDataUrl);
           setIsProcessing(false);
         } catch (err) {
           setError(
@@ -209,11 +209,11 @@ export default function ImageResizer() {
       };
 
       img.onerror = () => {
-        setError('Failed to load original image for resizing');
+        setError('Failed to load original texture for resizing');
         setIsProcessing(false);
       };
 
-      img.src = originalImage;
+      img.src = originalTexture;
     } catch (err) {
       setError(
         `Resize failed: ${err instanceof Error ? err.message : 'Unknown error'}`
@@ -222,16 +222,16 @@ export default function ImageResizer() {
     }
   };
 
-  // Download resized image
-  const downloadImage = () => {
-    if (!resizedImage) return;
+  // Download resized texture
+  const downloadTexture = () => {
+    if (!resizedTexture) return;
 
     const targetDimensions = calculateTargetDimensions();
     const extension = outputFormat === 'jpeg' ? 'jpg' : outputFormat;
     const filename = `resized-${targetDimensions.width}x${targetDimensions.height}.${extension}`;
 
     const link = document.createElement('a');
-    link.href = resizedImage;
+    link.href = resizedTexture;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
@@ -240,8 +240,8 @@ export default function ImageResizer() {
 
   // Clear all
   const clearAll = () => {
-    setOriginalImage(null);
-    setResizedImage(null);
+    setOriginalTexture(null);
+    setResizedTexture(null);
     setOriginalDimensions({ width: 0, height: 0 });
     setError(null);
     setPercentage(100);
@@ -252,20 +252,20 @@ export default function ImageResizer() {
     }
   };
 
-  const targetDimensions = originalImage ? calculateTargetDimensions() : null;
+  const targetDimensions = originalTexture ? calculateTargetDimensions() : null;
 
   return (
     <div className='p-4 space-y-6'>
-      <h2 className='text-xl font-bold'>Image Resizer</h2>
+      <h2 className='text-xl font-bold'>Texture Resizer</h2>
 
       <p className='text-gray-600 text-sm'>
-        Upload an image and resize it using percentage scaling, specific
+        Upload a texture and resize it using percentage scaling, specific
         dimensions, or preset sizes for social media and web use.
       </p>
 
       {/* File Upload */}
       <div className='space-y-4'>
-        {!originalImage && (
+        {!originalTexture && (
           <DragDropUploadBig
             onFileSelect={processFile}
             isDragOver={isDragOver}
@@ -277,14 +277,14 @@ export default function ImageResizer() {
       </div>
 
       {/* Original Image Info */}
-      {originalImage && (
+      {originalTexture && (
         <div className='bg-black p-4 rounded border border-gray-300'>
-          <h3 className='font-semibold mb-2 text-white'>Original Image</h3>
+          <h3 className='font-semibold mb-2 text-white'>Original Texture</h3>
           <p className='text-sm text-gray-300 mb-2'>
             Dimensions: {originalDimensions.width}×{originalDimensions.height}
           </p>
           <img
-            src={originalImage}
+            src={originalTexture}
             alt='Original'
             className='max-w-full h-auto border rounded shadow-sm'
             style={{ maxHeight: '300px' }}
@@ -293,7 +293,7 @@ export default function ImageResizer() {
       )}
 
       {/* Resize Controls */}
-      {originalImage && (
+      {originalTexture && (
         <div className='space-y-4 border p-4 rounded'>
           <h3 className='font-semibold'>Resize Settings</h3>
 
@@ -483,13 +483,12 @@ export default function ImageResizer() {
           {/* Action Buttons */}
           <div className='flex gap-4'>
             <button
-              onClick={resizeImage}
+              onClick={resizeTexture}
               disabled={isProcessing || !targetDimensions}
-              className={`px-4 py-2 rounded font-medium ${
-                !isProcessing && targetDimensions
+              className={`px-4 py-2 rounded font-medium ${!isProcessing && targetDimensions
                   ? 'bg-blue-500 text-white hover:bg-blue-600'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
+                }`}
             >
               {isProcessing ? 'Resizing...' : 'Resize Image'}
             </button>
@@ -512,19 +511,19 @@ export default function ImageResizer() {
       )}
 
       {/* Resized Image Result */}
-      {resizedImage && (
+      {resizedTexture && (
         <div className='space-y-4 border p-4 rounded'>
           <div className='flex justify-between items-center'>
             <h3 className='font-semibold'>Resized Result</h3>
             <button
-              onClick={downloadImage}
+              onClick={downloadTexture}
               className='px-4 py-2 bg-green-500 text-white rounded font-medium hover:bg-green-600'
             >
               Download Resized Image
             </button>
           </div>
           <img
-            src={resizedImage}
+            src={resizedTexture}
             alt='Resized'
             className='max-w-full h-auto border rounded shadow-sm'
             style={{ maxHeight: '400px' }}
