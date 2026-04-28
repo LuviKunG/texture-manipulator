@@ -20,6 +20,19 @@ that allows you to split and combine texture channels (RGBA) with ease.
 - Interactive sliders for fine-tuning default channel values
 - Real-time preview of the combined result
 
+### 🖼️ Texture Resizing
+
+- Automatically resize uploaded textures to a maximum dimension of 4096x4096 pixels
+- Maintains aspect ratio during resizing
+
+### **NEW** ❇️ Sprite Extractor
+
+- Upload a sprite sheet and extract individual sprites based on user-defined grid settings
+- Specify the number of rows and columns to define the grid
+- Optionally skip transparent cells when extracting sprites
+- Real-time preview of extracted sprites
+- Download extracted sprites as separate PNG files
+
 ### 🎯 Key Capabilities
 
 - **Multi-format Support**: Works with PNG, JPEG, WebP, and other common texture formats
