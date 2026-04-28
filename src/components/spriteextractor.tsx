@@ -57,6 +57,14 @@ export default function SpriteExtractor() {
   // Extracted sprites
   const [extractedSprites, setExtractedSprites] = useState<string[]>([]);
 
+  // Grid tool state
+  const [showGridTool, setShowGridTool] = useState(false);
+  const [gridCellWidth, setGridCellWidth] = useState(32);
+  const [gridCellHeight, setGridCellHeight] = useState(32);
+  const [gridOffsetX, setGridOffsetX] = useState(0);
+  const [gridOffsetY, setGridOffsetY] = useState(0);
+  const [gridSkipTransparent, setGridSkipTransparent] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
 
@@ -483,6 +491,83 @@ export default function SpriteExtractor() {
     setImageDimensions({ width: 0, height: 0 });
   };
 
+  // Check if a cell region has any non-transparent pixels
+  const isCellNonTransparent = (
+    pixels: Uint8ClampedArray,
+    imgWidth: number,
+    cellX: number,
+    cellY: number,
+    cellW: number,
+    cellH: number
+  ): boolean => {
+    for (let py = cellY; py < cellY + cellH; py++) {
+      for (let px = cellX; px < cellX + cellW; px++) {
+        const idx = (py * imgWidth + px) * 4;
+        if (pixels[idx + 3] > 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  // Generate grid of rectangles
+  const generateGrid = () => {
+    if (gridCellWidth < 1 || gridCellHeight < 1) return;
+
+    // Get pixel data if transparency detection is enabled
+    let pixels: Uint8ClampedArray | null = null;
+    if (gridSkipTransparent && imageRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = imageDimensions.width;
+      canvas.height = imageDimensions.height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(imageRef.current, 0, 0);
+        pixels = ctx.getImageData(
+          0,
+          0,
+          imageDimensions.width,
+          imageDimensions.height
+        ).data;
+      }
+    }
+
+    const rects: SpriteRect[] = [];
+    const startX = Math.max(0, gridOffsetX);
+    const startY = Math.max(0, gridOffsetY);
+    for (
+      let y = startY;
+      y + gridCellHeight <= imageDimensions.height;
+      y += gridCellHeight
+    ) {
+      for (
+        let x = startX;
+        x + gridCellWidth <= imageDimensions.width;
+        x += gridCellWidth
+      ) {
+        if (
+          gridSkipTransparent &&
+          pixels &&
+          !isCellNonTransparent(
+            pixels,
+            imageDimensions.width,
+            x,
+            y,
+            gridCellWidth,
+            gridCellHeight
+          )
+        ) {
+          continue;
+        }
+        rects.push({ x, y, width: gridCellWidth, height: gridCellHeight });
+      }
+    }
+    setSpriteRects(prev => [...prev, ...rects]);
+    setSelectedIndex(null);
+    setExtractedSprites([]);
+  };
+
   return (
     <div className='p-4 space-y-6'>
       <h2 className='text-xl font-bold'>Sprite Extractor</h2>
@@ -593,6 +678,137 @@ export default function SpriteExtractor() {
             >
               Clear All
             </button>
+          </div>
+
+          {/* Grid Tool */}
+          <div className='space-y-2'>
+            <button
+              onClick={() => setShowGridTool(!showGridTool)}
+              className='flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth={2}
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                className='w-4 h-4'
+              >
+                <rect x='3' y='3' width='7' height='7' />
+                <rect x='14' y='3' width='7' height='7' />
+                <rect x='3' y='14' width='7' height='7' />
+                <rect x='14' y='14' width='7' height='7' />
+              </svg>
+              Grid Tool
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth={2}
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                className={`w-4 h-4 transition-transform ${showGridTool ? 'rotate-180' : ''}`}
+              >
+                <polyline points='6 9 12 15 18 9' />
+              </svg>
+            </button>
+
+            {showGridTool && (
+              <div className='border rounded p-4 space-y-3 dark:border-gray-700'>
+                <p className='text-xs text-gray-500 dark:text-gray-400'>
+                  Auto-generate a grid of rectangles across the image based on
+                  cell size and optional offset.
+                </p>
+                <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+                  <label className='space-y-1'>
+                    <span className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                      Cell Width
+                    </span>
+                    <input
+                      type='number'
+                      value={gridCellWidth}
+                      min={1}
+                      onChange={e =>
+                        setGridCellWidth(Math.max(1, Number(e.target.value)))
+                      }
+                      className='w-full border rounded px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white'
+                    />
+                  </label>
+                  <label className='space-y-1'>
+                    <span className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                      Cell Height
+                    </span>
+                    <input
+                      type='number'
+                      value={gridCellHeight}
+                      min={1}
+                      onChange={e =>
+                        setGridCellHeight(Math.max(1, Number(e.target.value)))
+                      }
+                      className='w-full border rounded px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white'
+                    />
+                  </label>
+                  <label className='space-y-1'>
+                    <span className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                      Offset X
+                    </span>
+                    <input
+                      type='number'
+                      value={gridOffsetX}
+                      min={0}
+                      onChange={e =>
+                        setGridOffsetX(Math.max(0, Number(e.target.value)))
+                      }
+                      className='w-full border rounded px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white'
+                    />
+                  </label>
+                  <label className='space-y-1'>
+                    <span className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                      Offset Y
+                    </span>
+                    <input
+                      type='number'
+                      value={gridOffsetY}
+                      min={0}
+                      onChange={e =>
+                        setGridOffsetY(Math.max(0, Number(e.target.value)))
+                      }
+                      className='w-full border rounded px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white'
+                    />
+                  </label>
+                </div>
+                <label className='flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300'>
+                  <input
+                    type='checkbox'
+                    checked={gridSkipTransparent}
+                    onChange={e => setGridSkipTransparent(e.target.checked)}
+                    className='rounded'
+                  />
+                  Skip fully transparent cells
+                </label>
+                <div className='flex items-center gap-3'>
+                  <button
+                    onClick={generateGrid}
+                    className='px-4 py-2 bg-blue-500 text-white rounded font-medium hover:bg-blue-600 text-sm'
+                  >
+                    Generate Grid
+                  </button>
+                  <span className='text-xs text-gray-500 dark:text-gray-400'>
+                    ≈{' '}
+                    {Math.floor(
+                      (imageDimensions.width - gridOffsetX) / gridCellWidth
+                    ) *
+                      Math.floor(
+                        (imageDimensions.height - gridOffsetY) / gridCellHeight
+                      )}{' '}
+                    cells
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Info */}
