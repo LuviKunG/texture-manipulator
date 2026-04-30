@@ -5,12 +5,14 @@ import TextureChannelSplitter from '@/components/texturechannelsplitter';
 import TextureChannelCombiner from '@/components/texturechannelcombiner';
 import TextureResizer from '@/components/textureresizer';
 import SpriteExtractor from '@/components/spriteextractor';
+import SpriteWhiteSpaceRemover from '@/components/spritewhitespaceremover';
 
 enum TabType {
   TEXTURE_SPLITTER = 'texture_splitter',
   TEXTURE_COMBINER = 'texture_combiner',
   TEXTURE_RESIZER = 'texture_resizer',
   SPRITE_EXTRACTOR = 'sprite_extractor',
+  SPRITE_WHITE_SPACE_REMOVER = 'sprite_white_space_remover',
 }
 
 export default function Home() {
@@ -68,6 +70,18 @@ export default function Home() {
             >
               Sprite Extractor
             </button>
+            <button
+              onClick={() =>
+                setActiveComponent(TabType.SPRITE_WHITE_SPACE_REMOVER)
+              }
+              className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${
+                activeComponent === TabType.SPRITE_WHITE_SPACE_REMOVER
+                  ? 'bg-blue-500 text-white shadow-sm'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
+              }`}
+            >
+              Sprite White Space Remover
+            </button>
           </div>
         </div>
 
@@ -83,6 +97,9 @@ export default function Home() {
             {activeComponent === TabType.TEXTURE_RESIZER && <TextureResizer />}
             {activeComponent === TabType.SPRITE_EXTRACTOR && (
               <SpriteExtractor />
+            )}
+            {activeComponent === TabType.SPRITE_WHITE_SPACE_REMOVER && (
+              <SpriteWhiteSpaceRemover />
             )}
           </div>
         </div>

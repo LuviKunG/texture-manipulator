@@ -33,6 +33,13 @@ that allows you to split and combine texture channels (RGBA) with ease.
 - Real-time preview of extracted sprites
 - Download extracted sprites as separate PNG files
 
+## **NEW** ⭐ Sprite White Space Removal
+
+- Upload a sprite and automatically remove transparent white space around it
+- Maintains the original sprite dimensions while cropping out unnecessary transparent areas
+- Real-time preview of the cropped sprite
+- Download the cropped sprite as a high-quality PNG file
+
 ### 🎯 Key Capabilities
 
 - **Multi-format Support**: Works with PNG, JPEG, WebP, and other common texture formats
