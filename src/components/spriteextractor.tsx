@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState, useRef, useEffect, useCallback, DragEvent } from 'react';
@@ -403,17 +404,7 @@ export default function SpriteExtractor() {
     drawCanvas();
   }, [drawCanvas]);
 
-  // Keyboard handler for delete
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Delete' && selectedIndex !== null) {
-        deleteRect(selectedIndex);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedIndex]);
-
+  // Delete a rect by index
   const deleteRect = (index: number) => {
     setSpriteRects(prev => prev.filter((_, i) => i !== index));
     setSelectedIndex(null);
@@ -567,6 +558,17 @@ export default function SpriteExtractor() {
     setSelectedIndex(null);
     setExtractedSprites([]);
   };
+
+  // Keyboard handler for delete
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Delete' && selectedIndex !== null) {
+        deleteRect(selectedIndex);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedIndex]);
 
   return (
     <div className='p-4 space-y-6'>

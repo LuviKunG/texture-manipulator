@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 
 export default function NotFound() {
@@ -16,7 +15,7 @@ export default function NotFound() {
               Page Not Found
             </h2>
             <p className='text-gray-600 dark:text-gray-400 mb-8'>
-              Sorry, we couldn't find the page you're looking for.
+              Sorry, we couldn&apos;t find the page you&apos;re looking for.
             </p>
           </div>
 

@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState, useRef, ChangeEvent, DragEvent } from 'react';
+import { useState, useRef, DragEvent } from 'react';
 import DragDropUploadBig from './dragdropuploadbig';
 
 // Helper type for our channel processing
@@ -192,10 +193,11 @@ export default function TextureChannelSplitter() {
                 setIsGrayscale(!isGrayscale);
                 updateChannelImages(!isGrayscale);
               }}
-              className={`px-4 py-2 rounded font-medium transition-colors ${isGrayscale
+              className={`px-4 py-2 rounded font-medium transition-colors ${
+                isGrayscale
                   ? 'bg-blue-500 text-white hover:bg-blue-600'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
+              }`}
             >
               Grayscale
             </button>

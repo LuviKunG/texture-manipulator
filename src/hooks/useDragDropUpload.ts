@@ -3,7 +3,9 @@
 import { useRef, ChangeEvent, DragEvent } from 'react';
 
 interface UseDragDropUploadProps {
-  onFileSelect: (file: File) => void;
+  onFileSelect?: (file: File) => void;
+  onFilesSelect?: (files: File[]) => void;
+  multiple?: boolean;
   accept?: string;
   onDragOver?: (e: DragEvent<HTMLDivElement>) => void;
   onDragLeave?: (e: DragEvent<HTMLDivElement>) => void;
@@ -12,6 +14,8 @@ interface UseDragDropUploadProps {
 
 export function useDragDropUpload({
   onFileSelect,
+  onFilesSelect,
+  multiple = false,
   accept = 'image/*',
   onDragOver,
   onDragLeave,
@@ -19,15 +23,16 @@ export function useDragDropUpload({
 }: UseDragDropUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle file selection
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      onFileSelect(file);
+    if (!e.target.files) return;
+    if (multiple && onFilesSelect) {
+      onFilesSelect(Array.from(e.target.files));
+    } else {
+      const file = e.target.files[0];
+      if (file) onFileSelect?.(file);
     }
   };
 
-  // Internal drag handlers (if not provided externally)
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     onDragOver?.(e);
@@ -41,9 +46,14 @@ export function useDragDropUpload({
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     onDrop?.(e);
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      onFileSelect(file);
+    if (multiple && onFilesSelect) {
+      const files = Array.from(e.dataTransfer.files).filter(f =>
+        f.type.startsWith('image/')
+      );
+      if (files.length > 0) onFilesSelect(files);
+    } else {
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) onFileSelect?.(file);
     }
   };
 

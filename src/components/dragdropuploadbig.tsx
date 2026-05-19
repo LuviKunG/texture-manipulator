@@ -4,7 +4,9 @@ import { DragEvent } from 'react';
 import { useDragDropUpload } from '../hooks/useDragDropUpload';
 
 interface DragDropUploadBigProps {
-  onFileSelect: (file: File) => void;
+  onFileSelect?: (file: File) => void;
+  onFilesSelect?: (files: File[]) => void;
+  multiple?: boolean;
   accept?: string;
   isDragOver?: boolean;
   onDragOver?: (e: DragEvent<HTMLDivElement>) => void;
@@ -16,6 +18,8 @@ interface DragDropUploadBigProps {
 
 export default function DragDropUploadBig({
   onFileSelect,
+  onFilesSelect,
+  multiple = false,
   accept = 'image/*',
   isDragOver = false,
   onDragOver,
@@ -33,6 +37,8 @@ export default function DragDropUploadBig({
     accept: acceptFromHook,
   } = useDragDropUpload({
     onFileSelect,
+    onFilesSelect,
+    multiple,
     accept,
     onDragOver,
     onDragLeave,
@@ -43,8 +49,8 @@ export default function DragDropUploadBig({
     <div
       className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
         isDragOver
-          ? 'border-blue-400 bg-blue-50'
-          : 'border-gray-300 hover:border-gray-400'
+          ? 'border-blue-400 bg-blue-50 dark:bg-blue-950'
+          : 'border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500'
       } ${className}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -54,6 +60,7 @@ export default function DragDropUploadBig({
         ref={fileInputRef}
         type='file'
         accept={acceptFromHook}
+        multiple={multiple}
         onChange={handleFileSelect}
         className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
       />
@@ -73,7 +80,7 @@ export default function DragDropUploadBig({
             />
           </svg>
         </div>
-        <div className='text-sm text-gray-600'>
+        <div className='text-sm text-gray-600 dark:text-gray-400'>
           <span className='font-medium text-blue-600 hover:text-blue-500'>
             Click to upload
           </span>{' '}

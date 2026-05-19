@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState, useRef, ChangeEvent, DragEvent } from 'react';
+import { useState, useRef, DragEvent } from 'react';
 import DragDropUploadSmall from './dragdropuploadsmall';
 
 // Helper type for our channel data
@@ -50,17 +51,6 @@ export default function TextureChannelCombiner() {
   const greenInputRef = useRef<HTMLInputElement>(null);
   const blueInputRef = useRef<HTMLInputElement>(null);
   const alphaInputRef = useRef<HTMLInputElement>(null);
-
-  // Handle file upload for a specific channel
-  const handleChannelUpload = (
-    channel: ChannelType,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    processChannelFile(channel, file);
-  };
 
   // Handle drag and drop for channels
   const handleChannelDragOver = (
@@ -190,10 +180,6 @@ export default function TextureChannelCombiner() {
 
       // Process each pixel
       for (let i = 0; i < outputPixels.length; i += 4) {
-        const pixelIndex = i / 4;
-        const x = pixelIndex % w;
-        const y = Math.floor(pixelIndex / w);
-
         // Extract channel values (using first channel of each image as intensity)
         const redValue = channels.red.pixels
           ? getChannelIntensity(channels.red.pixels, i)
@@ -305,9 +291,9 @@ export default function TextureChannelCombiner() {
       <h2 className='text-xl font-bold'>Texture Channel Combiner</h2>
 
       <p className='text-gray-600 text-sm'>
-        Upload separate channel textures to combine them into a single texture. For
-        channels without files, you can select default values (Black, Gray, or
-        White).
+        Upload separate channel textures to combine them into a single texture.
+        For channels without files, you can select default values (Black, Gray,
+        or White).
       </p>
 
       {/* Channel Upload Section */}
@@ -534,10 +520,11 @@ export default function TextureChannelCombiner() {
         <button
           onClick={combineChannels}
           disabled={!canCombine || isProcessing}
-          className={`px-4 py-2 rounded font-medium ${canCombine && !isProcessing
+          className={`px-4 py-2 rounded font-medium ${
+            canCombine && !isProcessing
               ? 'bg-blue-500 text-white hover:bg-blue-600'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+          }`}
         >
           {isProcessing ? 'Combining...' : 'Combine Channels'}
         </button>

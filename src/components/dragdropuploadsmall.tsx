@@ -41,10 +41,11 @@ export default function DragDropUploadSmall({
 
   return (
     <div
-      className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${isDragOver
+      className={`relative border-2 border-dashed rounded p-4 text-center transition-colors ${
+        isDragOver
           ? 'border-blue-400 bg-blue-50'
           : 'border-gray-300 hover:border-gray-400'
-        } ${className}`}
+      } ${className}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
