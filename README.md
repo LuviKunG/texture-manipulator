@@ -25,7 +25,7 @@ that allows you to split and combine texture channels (RGBA) with ease.
 - Automatically resize uploaded textures to a maximum dimension of 4096x4096 pixels
 - Maintains aspect ratio during resizing
 
-### **NEW** ❇️ Sprite Extractor
+### ❇️ Sprite Extractor
 
 - Upload a sprite sheet and extract individual sprites based on user-defined grid settings
 - Specify the number of rows and columns to define the grid
@@ -33,12 +33,19 @@ that allows you to split and combine texture channels (RGBA) with ease.
 - Real-time preview of extracted sprites
 - Download extracted sprites as separate PNG files
 
-## **NEW** ⭐ Sprite White Space Removal
+### ⭐ Sprite White Space Removal
 
 - Upload a sprite and automatically remove transparent white space around it
 - Maintains the original sprite dimensions while cropping out unnecessary transparent areas
 - Real-time preview of the cropped sprite
 - Download the cropped sprite as a high-quality PNG file
+
+### 🧑‍🎨 Sprite Sheet Packer
+
+- Upload multiple individual sprites and pack them into a single sprite sheet
+- Automatically arrange sprites in a grid layout with configurable padding
+- Real-time preview of the generated sprite sheet
+- Download the packed sprite sheet as a high-quality PNG file
 
 ### 🎯 Key Capabilities
 

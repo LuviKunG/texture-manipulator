@@ -33,6 +33,12 @@ export default function TextureResizer() {
   const [maintainAspectRatio, setMaintainAspectRatio] = useState<boolean>(true);
   const [selectedPreset, setSelectedPreset] = useState<string>('');
 
+  // Preserve aspect ratio (letterbox/pillarbox) for dimensions mode
+  const [preserveAspect, setPreserveAspect] = useState<boolean>(false);
+  const [fillColor, setFillColor] = useState<string>('#000000');
+  const [fillAlpha, setFillAlpha] = useState<number>(0); // 0–255
+  const [anchor, setAnchor] = useState<string>('middle-center');
+
   // Texture quality for JPEG
   const [quality, setQuality] = useState<number>(90);
   const [outputFormat, setOutputFormat] = useState<'png' | 'jpeg' | 'webp'>(
@@ -170,22 +176,48 @@ export default function TextureResizer() {
             return;
           }
 
-          // Enable image smoothing for better quality
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
 
-          // Draw resized image
-          ctx.drawImage(
-            img,
-            0,
-            0,
-            img.naturalWidth,
-            img.naturalHeight,
-            0,
-            0,
-            targetDimensions.width,
-            targetDimensions.height
-          );
+          if (resizeMode === 'dimensions' && preserveAspect) {
+            // Fill background
+            const r = parseInt(fillColor.slice(1, 3), 16);
+            const g = parseInt(fillColor.slice(3, 5), 16);
+            const b = parseInt(fillColor.slice(5, 7), 16);
+            ctx.fillStyle = `rgba(${r},${g},${b},${fillAlpha / 255})`;
+            ctx.fillRect(0, 0, targetDimensions.width, targetDimensions.height);
+
+            // Scale to contain
+            const scale = Math.min(
+              targetDimensions.width / img.naturalWidth,
+              targetDimensions.height / img.naturalHeight
+            );
+            const drawW = img.naturalWidth * scale;
+            const drawH = img.naturalHeight * scale;
+
+            // Anchor offset
+            const [vert, horiz] = anchor.split('-');
+            const offsetX =
+              horiz === 'center'
+                ? (targetDimensions.width - drawW) / 2
+                : horiz === 'right'
+                  ? targetDimensions.width - drawW
+                  : 0;
+            const offsetY =
+              vert === 'middle'
+                ? (targetDimensions.height - drawH) / 2
+                : vert === 'bottom'
+                  ? targetDimensions.height - drawH
+                  : 0;
+
+            ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, offsetX, offsetY, drawW, drawH);
+          } else {
+            ctx.drawImage(
+              img,
+              0, 0, img.naturalWidth, img.naturalHeight,
+              0, 0, targetDimensions.width, targetDimensions.height
+            );
+          }
 
           // Convert to desired format
           const mimeType =
@@ -247,6 +279,10 @@ export default function TextureResizer() {
     setError(null);
     setPercentage(100);
     setSelectedPreset('');
+    setPreserveAspect(false);
+    setFillColor('#000000');
+    setFillAlpha(0);
+    setAnchor('middle-center');
 
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -365,8 +401,8 @@ export default function TextureResizer() {
 
           {/* Custom Dimensions Mode */}
           {resizeMode === 'dimensions' && (
-            <div className='space-y-2'>
-              <div className='flex items-center gap-4'>
+            <div className='space-y-3'>
+              <div className='flex flex-wrap items-center gap-4'>
                 <label className='flex items-center'>
                   <input
                     type='checkbox'
@@ -374,14 +410,22 @@ export default function TextureResizer() {
                     onChange={e => setMaintainAspectRatio(e.target.checked)}
                     className='mr-2'
                   />
-                  Maintain aspect ratio
+                  Lock aspect ratio
+                </label>
+                <label className='flex items-center'>
+                  <input
+                    type='checkbox'
+                    checked={preserveAspect}
+                    onChange={e => setPreserveAspect(e.target.checked)}
+                    className='mr-2'
+                  />
+                  Preserve aspect (letterbox)
                 </label>
               </div>
+
               <div className='grid grid-cols-2 gap-4'>
                 <div>
-                  <label className='block font-medium text-sm mb-1'>
-                    Width:
-                  </label>
+                  <label className='block font-medium text-sm mb-1'>Width:</label>
                   <input
                     type='number'
                     value={targetWidth}
@@ -391,9 +435,7 @@ export default function TextureResizer() {
                   />
                 </div>
                 <div>
-                  <label className='block font-medium text-sm mb-1'>
-                    Height:
-                  </label>
+                  <label className='block font-medium text-sm mb-1'>Height:</label>
                   <input
                     type='number'
                     value={targetHeight}
@@ -403,6 +445,69 @@ export default function TextureResizer() {
                   />
                 </div>
               </div>
+
+              {/* Preserve aspect options */}
+              {preserveAspect && (
+                <div className='border border-gray-600 rounded p-3 space-y-3'>
+                  {/* Fill color + alpha */}
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div>
+                      <label className='block font-medium text-sm mb-1'>Fill Color:</label>
+                      <input
+                        type='color'
+                        value={fillColor}
+                        onChange={e => setFillColor(e.target.value)}
+                        className='w-full h-9 rounded border border-gray-300 cursor-pointer bg-transparent'
+                      />
+                    </div>
+                    <div>
+                      <label className='block font-medium text-sm mb-1'>
+                        Fill Alpha: {fillAlpha} / 255
+                      </label>
+                      <input
+                        type='range'
+                        min='0'
+                        max='255'
+                        value={fillAlpha}
+                        onChange={e => setFillAlpha(Number(e.target.value))}
+                        className='w-full'
+                      />
+                    </div>
+                  </div>
+
+                  {/* 9-point anchor */}
+                  <div>
+                    <label className='block font-medium text-sm mb-2'>Anchor:</label>
+                    <div className='grid grid-cols-3 gap-1 w-28'>
+                      {(
+                        [
+                          'top-left', 'top-center', 'top-right',
+                          'middle-left', 'middle-center', 'middle-right',
+                          'bottom-left', 'bottom-center', 'bottom-right',
+                        ] as const
+                      ).map(pos => (
+                        <button
+                          key={pos}
+                          type='button'
+                          title={pos.replace('-', ' ')}
+                          onClick={() => setAnchor(pos)}
+                          className={`w-8 h-8 rounded flex items-center justify-center border transition-colors ${
+                            anchor === pos
+                              ? 'bg-blue-500 border-blue-500'
+                              : 'bg-gray-700 border-gray-500 hover:bg-gray-600'
+                          }`}
+                        >
+                          <span
+                            className={`w-2 h-2 rounded-full ${
+                              anchor === pos ? 'bg-white' : 'bg-gray-300'
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
